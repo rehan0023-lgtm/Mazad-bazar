@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Create Auction | Mazad Bazaar</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        body {
+            background: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            min-height: 72px;
+        }
+
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #0d6efd;
+            color: white;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        .main-section {
+            flex: 1;
+            padding: 45px 0 60px;
+        }
+
+        .page-header {
+            background: linear-gradient(
+                135deg,
+                #0b1220,
+                #172554
+            );
+
+            color: white;
+            border-radius: 20px;
+            padding: 38px 35px;
+        }
+
+        .page-header p {
+            color: rgba(255,255,255,0.72);
+            max-width: 650px;
+        }
+
+        .create-card {
+            border: 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+        }
+
+        .section-title {
+            font-weight: 700;
+        }
+
+        .form-section {
+            padding: 25px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .form-section:last-child {
+            border-bottom: 0;
+        }
+
+        .section-number {
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #e9f2ff;
+            color: #0d6efd;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        .form-label {
+            font-weight: 600;
+        }
+
+        .form-control {
+            min-height: 50px;
+            border-radius: 10px;
+        }
+
+        textarea.form-control {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.15);
+        }
+
+        .upload-box {
+            border: 2px dashed #ced4da;
+            border-radius: 14px;
+            padding: 20px;
+            background: #fafbfc;
+        }
+
+        .upload-icon {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .price-box {
+            background: #f1f5ff;
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .date-box {
+            background: #fff8e1;
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .summary-box {
+            background: #f8f9fa;
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .submit-button {
+            min-height: 54px;
+            border-radius: 11px;
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        .footer {
+            background: #111827;
+        }
+
+        @media (max-width: 991px) {
+
+            .navbar-actions {
+                margin-top: 12px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
+
+    <nav class="navbar navbar-dark bg-dark">
+
+        <div class="container">
+
+
+            <a
+                class="navbar-brand fw-bold d-flex align-items-center"
+                href="/"
+            >
+
+                <span class="brand-mark">
+                    M
+                </span>
+
+                Mazad Bazaar
+
+            </a>
+
+
+            <div class="navbar-actions d-flex align-items-center flex-wrap gap-2">
+
+
+                <a
+                    href="/auctions"
+                    class="btn btn-outline-light"
+                >
+                    Browse Auctions
+                </a>
+
+
+                <a
+                    href="/auction-history"
+                    class="btn btn-outline-light"
+                >
+                    Auction History
+                </a>
+
+
+                <a
+                    href="/notifications"
+                    class="btn btn-outline-light"
+                >
+                    🔔 Notifications
+                </a>
+
+
+                <a
+                    href="/seller-dashboard"
+                    class="btn btn-outline-light"
+                >
+                    Dashboard
+                </a>
+
+
+                <a
+                    href="/logout"
+                    class="btn btn-danger"
+                >
+                    Logout
+                </a>
+
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =====================================================
+         FLASH MESSAGES
+    ====================================================== -->
+
+    <div class="container mt-3">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div
+                        class="alert alert-{{ category }} alert-dismissible fade show shadow-sm"
+                        role="alert"
+                    >
+
+                        {{ message }}
+
+
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Close"
+                        ></button>
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main-section">
+
+        <div class="container">
+
+
+            <!-- =================================================
+                 PAGE HEADER
+            ================================================== -->
+
+            <div class="page-header mb-4">
+
+                <span class="badge bg-primary mb-3">
+                    🏪 SELLER CENTER
+                </span>
+
+
+                <h1 class="display-6 fw-bold mb-2">
+                    Create New Auction
+                </h1>
+
+
+                <p class="mb-0">
+                    List your product, set a starting price,
+                    and let buyers compete for it.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 FORM
+            ================================================== -->
+
+            <div class="row justify-content-center">
+
+                <div class="col-lg-8">
+
+
+                    <div class="card create-card">
+
+
+                        <form
+                            method="POST"
+                            action="/create-auction"
+                            enctype="multipart/form-data"
+                        >
+
+
+                            <!-- =================================================
+                                 PRODUCT INFORMATION
+                            ================================================== -->
+
+                            <div class="form-section">
+
+                                <div class="d-flex align-items-center mb-4">
+
+                                    <span class="section-number">
+                                        1
+                                    </span>
+
+
+                                    <div>
+
+                                        <h5 class="section-title mb-0">
+                                            Product Information
+                                        </h5>
+
+                                        <small class="text-muted">
+                                            Tell buyers what you are selling.
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- PRODUCT NAME -->
+
+                                <div class="mb-4">
+
+                                    <label
+                                        class="form-label"
+                                        for="product_name"
+                                    >
+                                        Product Name
+                                    </label>
+
+
+                                    <input
+                                        type="text"
+                                        id="product_name"
+                                        name="product_name"
+                                        class="form-control"
+                                        placeholder="e.g. Vintage Watch"
+                                        required
+                                    >
+
+                                </div>
+
+
+                                <!-- DESCRIPTION -->
+
+                                <div>
+
+                                    <label
+                                        class="form-label"
+                                        for="description"
+                                    >
+                                        Product Description
+                                    </label>
+
+
+                                    <textarea
+                                        id="description"
+                                        name="description"
+                                        class="form-control"
+                                        placeholder="Describe the product, its condition, features, and anything buyers should know..."
+                                        required
+                                    ></textarea>
+
+
+                                    <div class="form-text">
+                                        A detailed description helps buyers make informed bids.
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- =================================================
+                                 PRODUCT IMAGE
+                            ================================================== -->
+
+                            <div class="form-section">
+
+                                <div class="d-flex align-items-center mb-4">
+
+                                    <span class="section-number">
+                                        2
+                                    </span>
+
+
+                                    <div>
+
+                                        <h5 class="section-title mb-0">
+                                            Product Image
+                                        </h5>
+
+                                        <small class="text-muted">
+                                            Add a clear image of your product.
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="upload-box text-center">
+
+
+                                    <div class="upload-icon">
+                                        🖼️
+                                    </div>
+
+
+                                    <h6 class="fw-bold">
+                                        Upload Product Image
+                                    </h6>
+
+
+                                    <p class="text-muted small mb-3">
+                                        Choose a clear image that shows the product well.
+                                    </p>
+
+
+                                    <input
+                                        type="file"
+                                        id="product_image"
+                                        name="product_image"
+                                        class="form-control"
+                                        accept="image/*"
+                                        required
+                                    >
+
+
+                                    <div class="form-text mt-2">
+                                        Supported image formats depend on your application configuration.
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- =================================================
+                                 AUCTION SETTINGS
+                            ================================================== -->
+
+                            <div class="form-section">
+
+                                <div class="d-flex align-items-center mb-4">
+
+                                    <span class="section-number">
+                                        3
+                                    </span>
+
+
+                                    <div>
+
+                                        <h5 class="section-title mb-0">
+                                            Auction Settings
+                                        </h5>
+
+                                        <small class="text-muted">
+                                            Set the price and closing time.
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="row g-4">
+
+
+                                    <!-- STARTING BID -->
+
+                                    <div class="col-md-6">
+
+                                        <div class="price-box h-100">
+
+                                            <label
+                                                class="form-label"
+                                                for="starting_bid"
+                                            >
+                                                Starting Bid Price (₹)
+                                            </label>
+
+
+                                            <input
+                                                type="number"
+                                                id="starting_bid"
+                                                name="starting_bid"
+                                                class="form-control"
+                                                placeholder="Enter starting bid"
+                                                min="1"
+                                                step="0.01"
+                                                required
+                                            >
+
+
+                                            <div class="form-text">
+                                                This is the minimum starting price.
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- CLOSING DATE -->
+
+                                    <div class="col-md-6">
+
+                                        <div class="date-box h-100">
+
+                                            <label
+                                                class="form-label"
+                                                for="closing_date"
+                                            >
+                                                Auction Closing Date
+                                            </label>
+
+
+                                            <input
+                                                type="datetime-local"
+                                                id="closing_date"
+                                                name="closing_date"
+                                                class="form-control"
+                                                required
+                                            >
+
+
+                                            <div class="form-text">
+                                                Choose a future date and time.
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- =================================================
+                                 FINAL SUBMISSION
+                            ================================================== -->
+
+                            <div class="form-section">
+
+
+                                <div class="summary-box mb-4">
+
+
+                                    <div class="d-flex align-items-start">
+
+                                        <div class="fs-4 me-3">
+                                            💡
+                                        </div>
+
+
+                                        <div>
+
+                                            <strong>
+                                                Before publishing
+                                            </strong>
+
+
+                                            <div class="text-muted small mt-1">
+
+                                                Make sure your product information,
+                                                image, starting bid, and closing time
+                                                are correct.
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary w-100 submit-button"
+                                >
+                                    🚀 Create Auction
+                                </button>
+
+
+                                <div class="text-center mt-3">
+
+                                    <a
+                                        href="/seller-dashboard"
+                                        class="text-decoration-none text-muted"
+                                    >
+                                        Cancel and return to Dashboard
+                                    </a>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </form>
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer text-white">
+
+        <div class="container py-4">
+
+            <div class="text-center">
+
+                <div class="fw-bold fs-5">
+                    Mazad Bazaar
+                </div>
+
+                <small class="text-white-50">
+                    Online auction marketplace
+                </small>
+
+                <div class="mt-2">
+
+                    <small class="text-white-50">
+                        © 2026 Mazad Bazaar. All rights reserved.
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+</body>
+
+</html>

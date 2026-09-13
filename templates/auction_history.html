@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Auction History - Mazad Bazaar</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+</head>
+
+
+<body class="bg-light">
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <nav class="navbar navbar-dark bg-dark">
+
+        <div class="container">
+
+            <a
+                class="navbar-brand fw-bold"
+                href="/"
+            >
+                Mazad Bazaar
+            </a>
+
+
+            <div>
+
+                <a
+                    href="/"
+                    class="btn btn-outline-light me-2"
+                >
+                    Home
+                </a>
+
+
+                <a
+                    href="/auctions"
+                    class="btn btn-outline-light me-2"
+                >
+                    Browse Auctions
+                </a>
+
+
+                {% if session.get("user_id") %}
+
+                    <a
+                        href="/my-bids"
+                        class="btn btn-outline-light me-2"
+                    >
+                        My Bids
+                    </a>
+
+
+                    <a
+                        href="/auction-history"
+                        class="btn btn-light me-2"
+                    >
+                        My Auction History
+                    </a>
+
+
+                    <a
+                        href="/seller-dashboard"
+                        class="btn btn-outline-light me-2"
+                    >
+                        Dashboard
+                    </a>
+
+
+                    {% if session.get("role") == "admin" %}
+
+                        <a
+                            href="/admin"
+                            class="btn btn-warning me-2"
+                        >
+                            Admin
+                        </a>
+
+                    {% endif %}
+
+
+                    <a
+                        href="/logout"
+                        class="btn btn-danger"
+                    >
+                        Logout
+                    </a>
+
+
+                {% else %}
+
+                    <a
+                        href="/login"
+                        class="btn btn-outline-light me-2"
+                    >
+                        Login
+                    </a>
+
+
+                    <a
+                        href="/register"
+                        class="btn btn-primary"
+                    >
+                        Register
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+         FLASH MESSAGES
+    ========================== -->
+
+    <div class="container mt-4">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div
+                        class="alert alert-{{ category }} alert-dismissible fade show"
+                        role="alert"
+                    >
+
+                        {{ message }}
+
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Close"
+                        ></button>
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+    </div>
+
+
+    <!-- =========================
+         PAGE HEADER
+    ========================== -->
+
+    <div class="container py-5">
+
+        <div class="text-center mb-5">
+
+            <h1 class="fw-bold">
+                My Auction History
+            </h1>
+
+            <p class="text-muted">
+                Completed auctions you participated in or listed.
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             AUCTIONS
+        ========================== -->
+
+        {% if auctions %}
+
+
+            <div class="row g-4">
+
+                {% for auction in auctions %}
+
+
+                    <div class="col-md-6 col-lg-4">
+
+                        <div class="card shadow-sm h-100">
+
+
+                            <!-- PRODUCT IMAGE -->
+
+                            <div style="height: 220px;">
+
+                                {% if auction.product_image %}
+
+                                    <img
+                                        src="/uploads/{{ auction.product_image }}"
+                                        alt="{{ auction.product_name }}"
+                                        class="w-100 h-100 rounded-top"
+                                        style="object-fit: cover;"
+                                    >
+
+                                {% else %}
+
+                                    <div
+                                        class="d-flex align-items-center justify-content-center h-100 bg-secondary text-white rounded-top"
+                                    >
+                                        No Image
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- CARD BODY -->
+
+                            <div class="card-body">
+
+                                <h5 class="fw-bold mb-3">
+
+                                    {{ auction.product_name }}
+
+                                </h5>
+
+
+                                <!-- STATUS -->
+
+                                <div class="mb-3">
+
+                                    <span class="badge bg-secondary">
+
+                                        Auction Closed
+
+                                    </span>
+
+                                </div>
+
+
+                                <!-- STARTING BID -->
+
+                                <p class="mb-2">
+
+                                    <strong>
+                                        Starting Bid:
+                                    </strong>
+
+                                    ₹{{ auction.starting_bid }}
+
+                                </p>
+
+
+                                <!-- WINNING BID -->
+
+                                <p class="mb-2">
+
+                                    <strong>
+                                        Winning Bid:
+                                    </strong>
+
+                                    {% if auction.winner_id %}
+
+                                        ₹{{ auction.current_bid }}
+
+                                    {% else %}
+
+                                        <span class="text-muted">
+                                            No bids
+                                        </span>
+
+                                    {% endif %}
+
+                                </p>
+
+
+                                <!-- WINNER -->
+
+                                <p class="mb-2">
+
+                                    <strong>
+                                        Winner:
+                                    </strong>
+
+                                    {% if auction.winner_name %}
+
+                                        🏆 {{ auction.winner_name }}
+
+                                    {% else %}
+
+                                        <span class="text-muted">
+                                            No winner
+                                        </span>
+
+                                    {% endif %}
+
+                                </p>
+
+
+                                <!-- CLOSING DATE -->
+
+                                <p class="mb-3">
+
+                                    <strong>
+                                        Closed:
+                                    </strong>
+
+                                    {{ auction.closing_date }}
+
+                                </p>
+
+
+                                <!-- RESULT -->
+
+                                {% if auction.winner_id == session.get("user_id") %}
+
+                                    <div class="alert alert-success">
+
+                                        🏆 <strong>You Won!</strong>
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                <!-- VIEW RESULT -->
+
+                                <a
+                                    href="/product/{{ auction.id }}"
+                                    class="btn btn-primary w-100"
+                                >
+                                    View Auction Result
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                {% endfor %}
+
+            </div>
+
+
+        {% else %}
+
+
+            <!-- =========================
+                 NO HISTORY
+            ========================== -->
+
+            <div class="card shadow-sm">
+
+                <div class="card-body text-center py-5">
+
+                    <h3 class="fw-bold">
+
+                        No Auction History
+
+                    </h3>
+
+
+                    <p class="text-muted mt-2">
+
+                        You haven't participated in or listed
+                        any completed auctions yet.
+
+                    </p>
+
+
+                    <a
+                        href="/auctions"
+                        class="btn btn-primary mt-2"
+                    >
+                        Browse Active Auctions
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer
+        class="bg-dark text-white text-center py-3"
+    >
+
+        <p class="mb-0">
+
+            © 2026 Mazad Bazaar
+
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

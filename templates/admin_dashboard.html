@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Dashboard | Mazad Bazaar</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        body {
+            background: #f8f9fa;
+        }
+
+        .navbar {
+            min-height: 72px;
+        }
+
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #0d6efd;
+            color: white;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        .admin-header {
+            background: linear-gradient(
+                135deg,
+                #111827,
+                #1e293b
+            );
+
+            color: white;
+            border-radius: 20px;
+            padding: 42px 35px;
+        }
+
+        .admin-header p {
+            color: rgba(255,255,255,0.70);
+            max-width: 700px;
+        }
+
+        .admin-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.18);
+            padding: 7px 13px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .stat-card {
+            border: 0;
+            border-radius: 16px;
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.10) !important;
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 13px;
+            font-size: 24px;
+            background: #e9f2ff;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .dashboard-card {
+            border: 0;
+            border-radius: 18px;
+            box-shadow: 0 6px 22px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 24px 25px;
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .section-icon {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 11px;
+            background: #e9f2ff;
+            font-size: 21px;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            white-space: nowrap;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.35px;
+        }
+
+        .table tbody td {
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .table tbody tr {
+            transition: background 0.15s ease;
+        }
+
+        .product-name {
+            font-weight: 700;
+        }
+
+        .amount {
+            font-weight: 700;
+        }
+
+        .admin-protected {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .danger-button {
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .view-button {
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .admin-notice {
+            border: 0;
+            border-left: 5px solid #ffc107;
+            border-radius: 12px;
+        }
+
+        .empty-state {
+            padding: 55px 25px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 14px;
+        }
+
+        .footer {
+            background: #111827;
+        }
+
+        @media (max-width: 991px) {
+
+            .navbar-actions {
+                margin-top: 12px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
+
+    <nav class="navbar navbar-dark bg-dark">
+
+        <div class="container">
+
+
+            <a
+                class="navbar-brand fw-bold d-flex align-items-center"
+                href="/"
+            >
+
+                <span class="brand-mark">
+                    M
+                </span>
+
+                Mazad Bazaar
+
+            </a>
+
+
+            <div class="navbar-actions d-flex align-items-center flex-wrap gap-2">
+
+
+                <a
+                    href="/auctions"
+                    class="btn btn-outline-light"
+                >
+                    Browse Auctions
+                </a>
+
+
+                <a
+                    href="/auction-history"
+                    class="btn btn-outline-light"
+                >
+                    Auction History
+                </a>
+
+
+                <a
+                    href="/my-bids"
+                    class="btn btn-outline-light"
+                >
+                    My Bids
+                </a>
+
+
+                <a
+                    href="/notifications"
+                    class="btn btn-outline-light"
+                >
+                    🔔 Notifications
+                </a>
+
+
+                <a
+                    href="/seller-dashboard"
+                    class="btn btn-outline-light"
+                >
+                    Seller Dashboard
+                </a>
+
+
+                <span class="badge bg-warning text-dark px-3 py-2">
+                    🛡️ Admin
+                </span>
+
+
+                <a
+                    href="/logout"
+                    class="btn btn-danger"
+                >
+                    Logout
+                </a>
+
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =====================================================
+         FLASH MESSAGES
+    ====================================================== -->
+
+    <div class="container mt-3">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div
+                        class="alert alert-{{ category }} alert-dismissible fade show shadow-sm"
+                        role="alert"
+                    >
+
+                        {{ message }}
+
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                        ></button>
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN DASHBOARD
+    ====================================================== -->
+
+    <main class="container py-5">
+
+
+        <!-- =================================================
+             ADMIN HEADER
+        ================================================== -->
+
+        <div class="admin-header mb-5">
+
+            <div class="admin-badge">
+                🛡️ ADMIN CONTROL CENTER
+            </div>
+
+
+            <h1 class="display-6 fw-bold mb-2">
+                Admin Dashboard
+            </h1>
+
+
+            <p class="mb-0">
+                Manage users, monitor auctions, review bids,
+                and maintain the Mazad Bazaar marketplace.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             SUMMARY STATISTICS
+        ================================================== -->
+
+        <div class="row g-4 mb-5">
+
+
+            <!-- USERS -->
+
+            <div class="col-md-4">
+
+                <div class="card stat-card shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex justify-content-between align-items-start">
+
+                            <div>
+
+                                <div class="text-muted small fw-semibold">
+                                    TOTAL USERS
+                                </div>
+
+                                <div class="stat-number mt-1">
+                                    {{ total_users }}
+                                </div>
+
+                                <div class="text-muted">
+                                    Registered accounts
+                                </div>
+
+                            </div>
+
+
+                            <div class="stat-icon">
+                                👥
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIVE AUCTIONS -->
+
+            <div class="col-md-4">
+
+                <div class="card stat-card shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex justify-content-between align-items-start">
+
+                            <div>
+
+                                <div class="text-muted small fw-semibold">
+                                    ACTIVE AUCTIONS
+                                </div>
+
+                                <div class="stat-number mt-1 text-success">
+                                    {{ active_auctions }}
+                                </div>
+
+                                <div class="text-muted">
+                                    Currently running
+                                </div>
+
+                            </div>
+
+
+                            <div class="stat-icon">
+                                🔨
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- BIDS -->
+
+            <div class="col-md-4">
+
+                <div class="card stat-card shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex justify-content-between align-items-start">
+
+                            <div>
+
+                                <div class="text-muted small fw-semibold">
+                                    TOTAL BIDS
+                                </div>
+
+                                <div class="stat-number mt-1 text-primary">
+                                    {{ total_bids }}
+                                </div>
+
+                                <div class="text-muted">
+                                    Bids across auctions
+                                </div>
+
+                            </div>
+
+
+                            <div class="stat-icon">
+                                💰
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             MANAGE USERS
+        ================================================== -->
+
+        <div class="card dashboard-card mb-5">
+
+
+            <div class="section-header">
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="section-icon">
+                        👥
+                    </div>
+
+
+                    <div>
+
+                        <h4 class="fw-bold mb-1">
+                            Manage Users
+                        </h4>
+
+                        <p class="text-muted mb-0">
+                            View registered users and manage accounts.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {% if users %}
+
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+
+                        <thead class="table-dark">
+
+                            <tr>
+
+                                <th>
+                                    ID
+                                </th>
+
+                                <th>
+                                    Name
+                                </th>
+
+                                <th>
+                                    Email
+                                </th>
+
+                                <th>
+                                    Phone
+                                </th>
+
+                                <th>
+                                    Role
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+
+                            {% for user in users %}
+
+
+                                <tr>
+
+
+                                    <td>
+                                        #{{ user.id }}
+                                    </td>
+
+
+                                    <td class="product-name">
+                                        {{ user.name }}
+                                    </td>
+
+
+                                    <td>
+                                        {{ user.email }}
+                                    </td>
+
+
+                                    <td>
+                                        {{ user.phone }}
+                                    </td>
+
+
+                                    <td>
+
+
+                                        {% if user.role == "admin" %}
+
+                                            <span class="badge bg-dark">
+                                                🛡️ Admin
+                                            </span>
+
+
+                                        {% else %}
+
+                                            <span class="badge bg-primary">
+                                                User
+                                            </span>
+
+                                        {% endif %}
+
+
+                                    </td>
+
+
+                                    <td>
+
+
+                                        {% if user.role == "admin" %}
+
+                                            <span class="badge bg-secondary admin-protected">
+                                                🔒 Protected
+                                            </span>
+
+
+                                        {% else %}
+
+                                            <form
+                                                method="POST"
+                                                action="/admin/delete-user/{{ user.id }}"
+                                                onsubmit="return confirm('Are you sure you want to remove this user?');"
+                                                style="display:inline;"
+                                            >
+
+                                                <button
+                                                    type="submit"
+                                                    class="btn btn-sm btn-outline-danger danger-button"
+                                                >
+                                                    Remove
+                                                </button>
+
+                                            </form>
+
+                                        {% endif %}
+
+
+                                    </td>
+
+
+                                </tr>
+
+
+                            {% endfor %}
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+            {% else %}
+
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        👥
+                    </div>
+
+                    <h5 class="fw-bold">
+                        No Users Found
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        There are currently no registered users.
+                    </p>
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+        <!-- =================================================
+             MANAGE AUCTIONS
+        ================================================== -->
+
+        <div class="card dashboard-card mb-5">
+
+
+            <div class="section-header">
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="section-icon">
+                        🔨
+                    </div>
+
+
+                    <div>
+
+                        <h4 class="fw-bold mb-1">
+                            Manage Auction Listings
+                        </h4>
+
+                        <p class="text-muted mb-0">
+                            Monitor marketplace listings and auction status.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {% if auctions %}
+
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+
+                        <thead class="table-dark">
+
+                            <tr>
+
+                                <th>
+                                    ID
+                                </th>
+
+                                <th>
+                                    Product
+                                </th>
+
+                                <th>
+                                    Seller ID
+                                </th>
+
+                                <th>
+                                    Starting Bid
+                                </th>
+
+                                <th>
+                                    Current Bid
+                                </th>
+
+                                <th>
+                                    Closing Date
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+
+                            {% for auction in auctions %}
+
+
+                                <tr>
+
+
+                                    <td>
+                                        #{{ auction.id }}
+                                    </td>
+
+
+                                    <td class="product-name">
+                                        {{ auction.product_name }}
+                                    </td>
+
+
+                                    <td>
+                                        #{{ auction.seller_id }}
+                                    </td>
+
+
+                                    <td>
+                                        ₹{{ auction.starting_bid }}
+                                    </td>
+
+
+                                    <td class="amount text-success">
+                                        ₹{{ auction.current_bid }}
+                                    </td>
+
+
+                                    <td>
+                                        {{ auction.closing_date }}
+                                    </td>
+
+
+                                    <td>
+
+
+                                        {% if auction.status == "active" %}
+
+                                            <span class="badge bg-success">
+                                                ● Active
+                                            </span>
+
+
+                                        {% elif auction.status == "closed" %}
+
+                                            <span class="badge bg-danger">
+                                                ● Closed
+                                            </span>
+
+
+                                        {% else %}
+
+                                            <span class="badge bg-secondary">
+                                                {{ auction.status }}
+                                            </span>
+
+                                        {% endif %}
+
+
+                                    </td>
+
+
+                                    <td>
+
+
+                                        <a
+                                            href="/product/{{ auction.id }}"
+                                            class="btn btn-sm btn-outline-primary view-button me-1"
+                                        >
+                                            View
+                                        </a>
+
+
+                                        <form
+                                            method="POST"
+                                            action="/admin/delete-auction/{{ auction.id }}"
+                                            onsubmit="return confirm('Are you sure you want to remove this auction?');"
+                                            style="display:inline;"
+                                        >
+
+                                            <button
+                                                type="submit"
+                                                class="btn btn-sm btn-outline-danger danger-button"
+                                            >
+                                                Remove
+                                            </button>
+
+                                        </form>
+
+
+                                    </td>
+
+
+                                </tr>
+
+
+                            {% endfor %}
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+            {% else %}
+
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        🔨
+                    </div>
+
+                    <h5 class="fw-bold">
+                        No Auctions Found
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        There are currently no auction listings.
+                    </p>
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+        <!-- =================================================
+             ALL BIDS
+        ================================================== -->
+
+        <div class="card dashboard-card mb-5">
+
+
+            <div class="section-header">
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="section-icon">
+                        💰
+                    </div>
+
+
+                    <div>
+
+                        <h4 class="fw-bold mb-1">
+                            All Received Bids
+                        </h4>
+
+                        <p class="text-muted mb-0">
+                            Review bidding activity across the marketplace.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {% if all_bids %}
+
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+
+                        <thead class="table-dark">
+
+                            <tr>
+
+                                <th>
+                                    Bid ID
+                                </th>
+
+                                <th>
+                                    Product
+                                </th>
+
+                                <th>
+                                    Bidder
+                                </th>
+
+                                <th>
+                                    Email
+                                </th>
+
+                                <th>
+                                    Bid Amount
+                                </th>
+
+                                <th>
+                                    Contact
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Auction
+                                </th>
+
+                                <th>
+                                    Result
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+
+                            {% for bid in all_bids %}
+
+
+                                <tr>
+
+
+                                    <td>
+                                        #{{ bid.bid_id }}
+                                    </td>
+
+
+                                    <td class="product-name">
+                                        {{ bid.product_name }}
+                                    </td>
+
+
+                                    <td>
+                                        {{ bid.bidder_name }}
+                                    </td>
+
+
+                                    <td>
+                                        {{ bid.bidder_email }}
+                                    </td>
+
+
+                                    <td class="amount">
+                                        ₹{{ bid.bid_amount }}
+                                    </td>
+
+
+                                    <td>
+                                        {{ bid.contact_number }}
+                                    </td>
+
+
+                                    <td>
+                                        {{ bid.created_at }}
+                                    </td>
+
+
+                                    <td>
+
+
+                                        {% if bid.auction_status == "active" %}
+
+                                            <span class="badge bg-success">
+                                                Active
+                                            </span>
+
+
+                                        {% else %}
+
+                                            <span class="badge bg-secondary">
+                                                Closed
+                                            </span>
+
+                                        {% endif %}
+
+
+                                    </td>
+
+
+                                    <td>
+
+
+                                        {% if bid.auction_status == "closed" %}
+
+
+                                            {% if bid.winner_id == bid.bidder_id %}
+
+                                                <span class="badge bg-success">
+                                                    🏆 Winner
+                                                </span>
+
+
+                                            {% else %}
+
+                                                <span class="badge bg-secondary">
+                                                    Not Winner
+                                                </span>
+
+                                            {% endif %}
+
+
+                                        {% else %}
+
+                                            <span class="badge bg-warning text-dark">
+                                                Waiting
+                                            </span>
+
+                                        {% endif %}
+
+
+                                    </td>
+
+
+                                </tr>
+
+
+                            {% endfor %}
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+            {% else %}
+
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        💰
+                    </div>
+
+                    <h5 class="fw-bold">
+                        No Bids Yet
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        No bids have been placed yet.
+                    </p>
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+        <!-- =================================================
+             ADMIN WARNING
+        ================================================== -->
+
+        <div class="alert alert-warning admin-notice shadow-sm">
+
+            <div class="d-flex align-items-start">
+
+                <div class="fs-4 me-3">
+                    ⚠️
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Admin Controls
+                    </strong>
+
+
+                    <div class="mt-1">
+
+                        Removing a user also removes their
+                        bids and auction listings.
+
+                        Removing an auction removes its
+                        associated bids.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer text-white">
+
+        <div class="container py-4">
+
+            <div class="row align-items-center">
+
+
+                <div class="col-md-6">
+
+                    <div class="fw-bold fs-5">
+                        Mazad Bazaar
+                    </div>
+
+                    <small class="text-white-50">
+                        Administration Panel
+                    </small>
+
+                </div>
+
+
+                <div class="col-md-6 text-md-end mt-3 mt-md-0">
+
+                    <small class="text-white-50">
+                        © 2026 Mazad Bazaar. All rights reserved.
+                    </small>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+</body>
+
+</html>

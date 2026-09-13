@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Bids | Mazad Bazaar</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        body {
+            background: #f8f9fa;
+        }
+
+        .navbar {
+            min-height: 72px;
+        }
+
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #0d6efd;
+            color: white;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        .page-header {
+            background: linear-gradient(
+                135deg,
+                #0b1220,
+                #172554
+            );
+
+            color: white;
+            border-radius: 20px;
+            padding: 40px 35px;
+        }
+
+        .page-header p {
+            color: rgba(255,255,255,0.72);
+            max-width: 650px;
+        }
+
+        .bid-card {
+            border: 0;
+            border-radius: 16px;
+            overflow: hidden;
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .bid-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12) !important;
+        }
+
+        .product-image {
+            height: 225px;
+            object-fit: cover;
+            background: #e9ecef;
+        }
+
+        .no-image {
+            height: 225px;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 18px;
+        }
+
+        .product-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .price-box {
+            background: #f1f5ff;
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .price-label {
+            color: #6c757d;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .price-value {
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .current-price {
+            color: #0d6efd;
+        }
+
+        .auction-date {
+            font-size: 0.88rem;
+            color: #6c757d;
+        }
+
+        .status-box {
+            border-radius: 12px;
+            padding: 14px;
+            border: 0;
+        }
+
+        .winning {
+            background: #e8f7ee;
+            color: #146c43;
+        }
+
+        .outbid {
+            background: #fff3cd;
+            color: #664d03;
+        }
+
+        .won {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .lost {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .view-button {
+            border-radius: 10px;
+            padding: 11px;
+            font-weight: 600;
+        }
+
+        .empty-state {
+            background: white;
+            border-radius: 18px;
+            padding: 75px 25px;
+            text-align: center;
+            box-shadow: 0 6px 22px rgba(0,0,0,0.06);
+        }
+
+        .empty-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .footer {
+            background: #111827;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
+
+    <nav class="navbar navbar-dark bg-dark">
+
+        <div class="container">
+
+
+            <a
+                class="navbar-brand fw-bold d-flex align-items-center"
+                href="/"
+            >
+
+                <span class="brand-mark">
+                    M
+                </span>
+
+                Mazad Bazaar
+
+            </a>
+
+
+            <div class="d-flex align-items-center flex-wrap gap-2">
+
+
+                <a
+                    href="/auction-history"
+                    class="btn btn-outline-light"
+                >
+                    Auction History
+                </a>
+
+
+                <a
+                    href="/my-bids"
+                    class="btn btn-light"
+                >
+                    My Bids
+                </a>
+
+
+                <a
+                    href="/notifications"
+                    class="btn btn-outline-light"
+                >
+                    🔔 Notifications
+                </a>
+
+
+                <a
+                    href="/seller-dashboard"
+                    class="btn btn-outline-light"
+                >
+                    Dashboard
+                </a>
+
+
+                {% if session.get("role") == "admin" %}
+
+                    <a
+                        href="/admin"
+                        class="btn btn-warning"
+                    >
+                        Admin
+                    </a>
+
+                {% endif %}
+
+
+                <a
+                    href="/logout"
+                    class="btn btn-danger"
+                >
+                    Logout
+                </a>
+
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =====================================================
+         FLASH MESSAGES
+    ====================================================== -->
+
+    <div class="container mt-3">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div
+                        class="alert alert-{{ category }} alert-dismissible fade show shadow-sm"
+                        role="alert"
+                    >
+
+                        {{ message }}
+
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                        ></button>
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <div class="container py-5">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header mb-5">
+
+            <span class="badge bg-primary mb-3">
+                💰 YOUR BIDDING ACTIVITY
+            </span>
+
+
+            <h1 class="display-6 fw-bold mb-2">
+                My Bids
+            </h1>
+
+
+            <p class="mb-0">
+                Track your bids, see your current position,
+                and check your auction results.
+            </p>
+
+        </div>
+
+
+        {% if my_bids %}
+
+
+            <!-- =================================================
+                 BID CARDS
+            ================================================== -->
+
+            <div class="row g-4">
+
+
+                {% for bid in my_bids %}
+
+
+                    <div class="col-md-6 col-lg-4">
+
+
+                        <div class="card bid-card shadow-sm h-100">
+
+
+                            <!-- PRODUCT IMAGE -->
+
+                            {% if bid.product_image %}
+
+                                <img
+                                    src="/uploads/{{ bid.product_image }}"
+                                    alt="{{ bid.product_name }}"
+                                    class="w-100 product-image"
+                                >
+
+                            {% else %}
+
+                                <div class="no-image">
+                                    📦
+                                    <span class="ms-2">
+                                        No Image
+                                    </span>
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- CARD BODY -->
+
+                            <div class="card-body p-4">
+
+
+                                <h5 class="product-title mb-3">
+
+                                    {{ bid.product_name }}
+
+                                </h5>
+
+
+                                <!-- PRICE INFORMATION -->
+
+                                <div class="row g-2 mb-3">
+
+
+                                    <div class="col-6">
+
+                                        <div class="price-box">
+
+                                            <div class="price-label">
+                                                Your Bid
+                                            </div>
+
+                                            <div class="price-value">
+
+                                                ₹{{ bid.bid_amount }}
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="col-6">
+
+                                        <div class="price-box">
+
+                                            <div class="price-label">
+                                                Current Bid
+                                            </div>
+
+                                            <div class="price-value current-price">
+
+                                                ₹{{ bid.current_bid }}
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+
+                                <!-- AUCTION DATE -->
+
+                                <div class="auction-date mb-3">
+
+                                    ⏰
+
+                                    <strong>
+                                        Auction Ends:
+                                    </strong>
+
+                                    <br>
+
+                                    <span class="ms-4">
+                                        {{ bid.closing_date }}
+                                    </span>
+
+                                </div>
+
+
+                                <!-- =================================================
+                                     AUCTION STATUS
+                                ================================================== -->
+
+
+                                {% if bid.status == "closed" %}
+
+
+                                    <!-- WON -->
+
+                                    {% if bid.winner_id == session.get("user_id") %}
+
+                                        <div class="status-box won mb-3">
+
+                                            <div class="fw-bold">
+                                                🏆 You Won!
+                                            </div>
+
+                                            <small>
+                                                Your bid was the winning bid.
+                                            </small>
+
+                                        </div>
+
+
+                                    <!-- LOST -->
+
+                                    {% else %}
+
+                                        <div class="status-box lost mb-3">
+
+                                            <div class="fw-bold">
+                                                ❌ Auction Lost
+                                            </div>
+
+                                            <small>
+                                                Another bidder had the highest bid.
+                                            </small>
+
+                                        </div>
+
+                                    {% endif %}
+
+
+                                {% else %}
+
+
+                                    <!-- CURRENTLY WINNING -->
+
+                                    {% if bid.bid_amount >= bid.current_bid %}
+
+                                        <div class="status-box winning mb-3">
+
+                                            <div class="fw-bold">
+                                                🟢 You Are Winning
+                                            </div>
+
+                                            <small>
+                                                You currently have the highest bid.
+                                            </small>
+
+                                        </div>
+
+
+                                    <!-- OUTBID -->
+
+                                    {% else %}
+
+                                        <div class="status-box outbid mb-3">
+
+                                            <div class="fw-bold">
+                                                🔴 You Have Been Outbid
+                                            </div>
+
+                                            <small>
+                                                Another bidder has placed a higher bid.
+                                            </small>
+
+                                        </div>
+
+                                    {% endif %}
+
+
+                                {% endif %}
+
+
+                                <!-- VIEW AUCTION -->
+
+                                <a
+                                    href="/product/{{ bid.auction_id }}"
+                                    class="btn btn-primary w-100 view-button"
+                                >
+                                    View Auction →
+                                </a>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+        {% else %}
+
+
+            <!-- =================================================
+                 EMPTY STATE
+            ================================================== -->
+
+            <div class="empty-state">
+
+
+                <div class="empty-icon">
+                    💰
+                </div>
+
+
+                <h3 class="fw-bold">
+                    No Bids Yet
+                </h3>
+
+
+                <p class="text-muted mb-4">
+
+                    You haven't placed any bids yet.
+                    Explore available auctions and make your first bid.
+
+                </p>
+
+
+                <a
+                    href="/auctions"
+                    class="btn btn-primary btn-lg"
+                >
+                    Browse Auctions
+                </a>
+
+
+            </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer text-white">
+
+        <div class="container py-4">
+
+            <div class="row align-items-center">
+
+
+                <div class="col-md-6">
+
+                    <div class="fw-bold fs-5">
+                        Mazad Bazaar
+                    </div>
+
+                    <small class="text-white-50">
+                        Online auction marketplace
+                    </small>
+
+                </div>
+
+
+                <div class="col-md-6 text-md-end mt-3 mt-md-0">
+
+                    <small class="text-white-50">
+                        © 2026 Mazad Bazaar. All rights reserved.
+                    </small>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+</body>
+
+</html>
